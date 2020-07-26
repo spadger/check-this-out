@@ -8,6 +8,7 @@ This application was developed in Windows using dotNet Core 3.1, WSL & linux con
 
 ## Running
 
+You can excercise the API from https://localhost/swagger
 
 ## Assumptions
 * There is only one acquiring bank whose task it is to interact with the cardholder's actual bank whichever that may be.  i.e. this payment gateway isn't connected to BACS or the Faster Payments system, but exists simply to provide a stable interface to wider banking infrastructure.
