@@ -1,11 +1,19 @@
 ﻿using System.Threading.Tasks;
-using JonBates.CheckThisOut.Core.Shared;
 
 namespace JonBates.CheckThisOut.Core.PaymentStore
 {
-    interface IPaymentStore
+    public interface IPaymentStore
     {
-        Task StoreCaptureFundsRequestAsync(CaptureFundsRequest request);
-        Task<CaptureFundsResponse> StoreCaptureFundsResponseAsync(string paymentRequestId);
+        /// <summary>
+        /// Idempotently stores a payment request, according to the request's RequestId
+        /// </summary>
+        /// <param name="request">The request to store</param>
+        /// <returns>
+        /// StorePaymentRequestResult.StoredSuccessfully if the request seems new,
+        /// or StorePaymentRequestResult.AlreadyExists if the request is not new, indicating it will not be stored
+        /// </returns>
+        Task<StorePaymentRequestResult> StoreCaptureFundsRequestAsync(CaptureFundsRequest request);
+        Task StoreCaptureFundsResponseAsync(CaptureFundsResponse response);
+        Task<SubmittedPayment> RetrievePaymentDetailsAsync(string paymentRequestId);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace JonBates.CheckThisOut.Core.Shared
+namespace JonBates.CheckThisOut.Core
 {
     public class CaptureFundsResponse // I would have loved to have access to F# union-types here to have bound set of response types
     {

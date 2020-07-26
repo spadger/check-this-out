@@ -12,14 +12,15 @@ You can excercise the API from https://localhost/swagger
 
 ## Assumptions
 * There is only one acquiring bank whose task it is to interact with the cardholder's actual bank whichever that may be.  i.e. this payment gateway isn't connected to BACS or the Faster Payments system, but exists simply to provide a stable interface to wider banking infrastructure.
+* Calls to the banking infrastructure are synchronous - the application will wait for a response and record it. 
+* In a real-world scenario, we'd lock down or disable the swagger-ui endpioint
 
 ## Things I left out
 
 * Structured logging.  Its really useful generally, but overkill for this tech-demo.  We'll log plain messages to the console for brevity
 * OpenTacing. Again, something I'd recommend in a distributed environment, but not entirely useful with only one application
+* Lots of application metadata associated with requests & responses, e.g. client version, application version, machine id, correlation, causation & request Ids
 
 ## Other Notes
 When architecting a high-level solution, I prefer to split by module (i.e. broad business responsibility) rather than by layer (data-layer, ports, adapters etc)
-I am not particularly happy with the current domain model for 2 reasons:
- 1. The namespacing isn't great since both the bank module and the payment-store module use the same representations, meaning those classes end up in a lombo `Domain` namespace
- 2. I am used to Kotlin's sealed classes (the closest dotnet equivalent is F#'s [discriminated union](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/discriminated-unions)).  I'd have loved the domain's response types to have been closer to that but I didn't want to go down some domain-modelling rabbit hole when the entire excercise is fairly wide-ranging
+I am not entirely with the `CaptureFundsResponse` class because I'm used to Kotlin's sealed classes (the closest dotnet equivalent is F#'s [discriminated union](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/discriminated-unions)).  I'd have loved the domain's response types to have been closer to that but I didn't want to go down some domain-modelling rabbit hole when the entire excercise is fairly wide-ranging

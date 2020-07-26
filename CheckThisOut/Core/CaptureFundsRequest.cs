@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace JonBates.CheckThisOut.Core.Shared
+namespace JonBates.CheckThisOut.Core
 {
     public class CaptureFundsRequest
     {
-        public CaptureFundsRequest(string requestId, string customerName, string address, string postCode, string pan, decimal amount, DateTime validFrom, DateTime validTo, string cvv, string threeDsToken, DateTime postingDate)
+        public CaptureFundsRequest(string requestId, Guid merchantId, string customerName, string address, string postCode, string pan, decimal amount, DateTime validFrom, DateTime validTo, string cvv, string threeDsToken, DateTime postingDate)
         {
             RequestId = requestId;
+            MerchantId = merchantId;
             CustomerName = customerName;
             Address = address;
             PostCode = postCode;
@@ -19,17 +20,18 @@ namespace JonBates.CheckThisOut.Core.Shared
             PostingDate = postingDate;
         }
 
-        public string RequestId { get; }
-        public string CustomerName { get; }
-        public string Address { get; }
-        public string PostCode { get; }
-        public string PAN { get; } // Card type can be inferred from the BIN
-        public decimal Amount { get; }
-        public DateTime ValidFrom { get; }
-        public DateTime ValidTo { get; }
-        public string CVV { get; }
-        public string ThreeDSToken { get; }
-        public DateTime PostingDate { get; }
+        public string RequestId { get; set; }
+        public Guid MerchantId { get; set; }
+        public string CustomerName { get; set; }
+        public string Address { get; set; }
+        public string PostCode { get; set; }
+        public string PAN { get; set; } // Card type can be inferred from the BIN
+        public decimal Amount { get; set; }
+        public DateTime ValidFrom { get; set; }
+        public DateTime ValidTo { get; set; }
+        public string CVV { get; set; }
+        public string ThreeDSToken { get; set; }
+        public DateTime PostingDate { get; set; }
 
         protected bool Equals(CaptureFundsRequest other)
         {

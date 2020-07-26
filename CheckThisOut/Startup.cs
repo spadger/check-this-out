@@ -1,4 +1,7 @@
 using System;
+using JonBates.CheckThisOut.Core;
+using JonBates.CheckThisOut.Core.BankClient;
+using JonBates.CheckThisOut.Core.PaymentStore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +23,10 @@ namespace JonBates.CheckThisOut
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IPaymentProcess, PaymentProcess>();
+            services.AddSingleton<IBankClient, FakeBankClient>();
+            services.AddSingleton<IPaymentStore, InMemoryPaymentStore>();
+
             services.AddControllers();
             services.AddSwaggerGen(
                 x =>

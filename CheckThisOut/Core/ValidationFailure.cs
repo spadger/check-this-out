@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JonBates.CheckThisOut.Core.Shared
+namespace JonBates.CheckThisOut.Core
 {
     public class ValidationFailure
     {
