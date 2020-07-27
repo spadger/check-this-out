@@ -1,16 +1,14 @@
 using System;
-using System.Text;
+using System.Text.Json.Serialization;
 using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.BankClient;
 using JonBates.CheckThisOut.Core.PaymentStore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Prometheus;
 
@@ -32,57 +30,15 @@ namespace JonBates.CheckThisOut
             services.AddSingleton<IBankClient, FakeBankClient>();
             services.AddSingleton<IPaymentStore, InMemoryPaymentStore>();
 
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddControllers()
+                .AddJsonOptions(x =>
                 {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateActor = false,
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = false,
-                        ValidateIssuerSigningKey = false,
-                        ValidateTokenReplay = false,
-                        ClockSkew = TimeSpan.Zero
-                    };
+                    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
-
-
-            services.AddControllers();
             services.AddSwaggerGen(
                 x =>
                 {
-
-                    OpenApiSecurityScheme securityDefinition = new OpenApiSecurityScheme()
-                    {
-                        Name = "Bearer",
-                        BearerFormat = "JWT",
-                        Scheme = "bearer",
-                        Description = "Specify the authorization token.",
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.Http,
-                    };
-                    x.AddSecurityDefinition("jwt_auth", securityDefinition);
-
-                    // Make sure swagger UI requires a Bearer token specified
-                    OpenApiSecurityScheme securityScheme = new OpenApiSecurityScheme()
-                    {
-                        Reference = new OpenApiReference()
-                        {
-                            Id = "jwt_auth",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    };
-                    OpenApiSecurityRequirement securityRequirements = new OpenApiSecurityRequirement()
-                    {
-                        {securityScheme, new string[] { }},
-                    };
-                    x.AddSecurityRequirement(securityRequirements);
-
                     x.SwaggerDoc("v1",
                         new OpenApiInfo
                         {
@@ -111,11 +67,7 @@ namespace JonBates.CheckThisOut
             app.UseRewriter(option);
 
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
             app.UseMetricServer();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -126,12 +78,6 @@ namespace JonBates.CheckThisOut
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "CheckThisOut V1");
-
-
-
-
-
-
             });
 
 

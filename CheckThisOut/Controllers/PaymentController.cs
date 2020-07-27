@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.PaymentStore;
 using JonBates.CheckThisOut.DTOs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -14,7 +13,6 @@ using Prometheus;
 
 namespace JonBates.CheckThisOut.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PaymentController : ControllerBase
@@ -35,7 +33,7 @@ namespace JonBates.CheckThisOut.Controllers
 
             _successCounter = Metrics.CreateCounter(
                 "payment_request_success_count",
-                "The total number of sucessfully processed payment requests");
+                "The total number of successfully processed payment requests");
 
             _responseTimeSummary = Metrics.CreateSummary("payment_request_duration_seconds",
                 "The duration in seconds between the response to a new payment request", new SummaryConfiguration
