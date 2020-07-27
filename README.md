@@ -19,6 +19,9 @@ Any transaction you submit can be retrieved
   * 500 - General Exception
   * 400 - Validation failure (i.e. request DTO was valid, but the request was rejected by the acquiring bank)
 
+## CI
+CI was implemented as a simple github action - https://github.com/spadger/check-this-out/actions.  Currently it just restores and builds, setting the project's status upon completion.
+
 ## Assumptions
 * There is only one acquiring bank whose task it is to interact with the cardholder's actual bank whichever that may be.  i.e. this payment gateway isn't connected to BACS or the Faster Payments system, but exists simply to provide a stable interface to wider banking infrastructure.
 * Calls to the banking infrastructure are synchronous, since real-world card-processing SLAs are ~200ms - the application will wait for a response and record it.
