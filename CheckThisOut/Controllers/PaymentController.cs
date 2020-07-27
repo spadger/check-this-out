@@ -58,10 +58,7 @@ namespace JonBates.CheckThisOut.Controllers
             };
         }
 
-        /// <summary>
-        /// Retrieves a previously-processed transaction
-        /// </summary>
-        /// <returns>A newly created TodoItem</returns>
+
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SubmittedPaymentDetailsResponseDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet, Route("{paymentRequestId}")]

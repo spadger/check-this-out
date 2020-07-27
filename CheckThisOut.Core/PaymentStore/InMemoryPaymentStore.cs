@@ -33,7 +33,7 @@ namespace JonBates.CheckThisOut.Core.PaymentStore
             _log.LogInformation("Storing processing result for {requestId}", paymentRequestId);
             
             _cache.AddOrUpdate(paymentRequestId,
-                k => throw new Exception("Could not find request with id ${paymentRequestId}"),
+                k => throw new InvalidOperationException("Could not find request with id ${paymentRequestId}"),
                 (k, v) => v.WithResponse(processingResult)
             );
 
