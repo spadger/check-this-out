@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace JonBates.CheckThisOut.Core.BankClient
 {
@@ -8,57 +9,63 @@ namespace JonBates.CheckThisOut.Core.BankClient
     {
         public static class CVVTypes
         {
-            public const string PaymentGatewayInaccessible = "502"; // May as well make these HTTP codes to be easy to remember
-            public const string ValidationFailure = "400";
-            public const string OtherException = "500";
+            public const string Exception = "500";
+            public const string ValidationFailure = "400"; // May as well uas HTTP processingStatus codes to make them memorable
         }
 
-        public Task<CaptureFundsResponse> CaptureFundsAsync(CaptureFundsRequest request)
+        private readonly ILogger<FakeBankClient> _log;
+
+        public FakeBankClient(ILogger<FakeBankClient> log)
         {
+            _log = log;
+        }
+
+        public Task<Either<PaymentProcessErrorResult, CaptureFundsBankResponse>> CaptureFundsAsync(CaptureFundsRequest request)
+        {
+            _log.LogInformation(">> CaptureFundsAsync requestId={requestId}", request.RequestId);
+
             var result = request.CVV switch
             {
-                CVVTypes.PaymentGatewayInaccessible => BuildOtherFailure(request, CaptureFundsResponseType.PaymentGatewayInaccessible),
-                CVVTypes.ValidationFailure => BuildValidationFailure(request, CaptureFundsResponseType.ValidationFailure),
-                CVVTypes.OtherException => BuildOtherFailure(request, CaptureFundsResponseType.OtherFailure),
-                _ => BuildSuccess(request, CaptureFundsResponseType.Success)
+                CVVTypes.Exception => BuildException(),
+                CVVTypes.ValidationFailure => BuildValidationFailure(),
+                _ => BuildSuccess()
             };
 
+            _log.LogInformation("<< CaptureFundsAsync requestId={requestId}", request.RequestId);
             return Task.FromResult(result);
         }
 
-        private static CaptureFundsResponse BuildSuccess(CaptureFundsRequest request, CaptureFundsResponseType responseType)
+        private Either<PaymentProcessErrorResult, CaptureFundsBankResponse> BuildSuccess()
         {
-            return new CaptureFundsResponse(
-                responseType,
-                request.RequestId,
-                Guid.NewGuid().ToString("D")
-            );
+            _log.LogInformation("Simulating a successful response from the bank");
+
+            var result = new CaptureFundsBankResponse(Guid.NewGuid().ToString("D"));
+            return Either<PaymentProcessErrorResult, CaptureFundsBankResponse>.Right(result);
         }
 
-        private static CaptureFundsResponse BuildValidationFailure(CaptureFundsRequest request, CaptureFundsResponseType responseType)
+        private Either<PaymentProcessErrorResult, CaptureFundsBankResponse> BuildValidationFailure()
         {
-            return new CaptureFundsResponse(
-                responseType,
-                request.RequestId,
-                Guid.NewGuid().ToString("D"),
-                "",
-                new List<ValidationFailure>
+            _log.LogInformation("Simulating a successful validation-failure from the bank");
+
+            var result = new PaymentProcessErrorResult(
+                PaymentProcessErrorType.AcquiringBankValidationError,
+                null,
+                new List<FieldError>
                 {
-                    new ValidationFailure(nameof(request.ThreeDSToken), "Token not valid"), 
-                    new ValidationFailure(nameof(request.PAN), "Invalid BIN")
+                    new FieldError(nameof(CaptureFundsRequest.ThreeDSToken), "Token not valid"), 
+                    new FieldError(nameof(CaptureFundsRequest.PAN), "Checksum Failure")
                 }
             );
+
+            return Either<PaymentProcessErrorResult, CaptureFundsBankResponse>.Left(result);
         }
 
-        private static CaptureFundsResponse BuildOtherFailure(CaptureFundsRequest request, CaptureFundsResponseType responseType)
+        private Either<PaymentProcessErrorResult, CaptureFundsBankResponse> BuildException()
         {
-            return new CaptureFundsResponse(
-                responseType,
-                request.RequestId,
-                Guid.NewGuid().ToString("D"),
-                "A simulated exception occurred",
-                new List<ValidationFailure>()
-            );
+            _log.LogInformation("Simulating an exception from the bank");
+
+            var result = new PaymentProcessErrorResult(PaymentProcessErrorType.Exception, "some-exception-id");
+            return Either<PaymentProcessErrorResult, CaptureFundsBankResponse>.Left(result);
         }
     }
 }

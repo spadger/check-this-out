@@ -13,7 +13,7 @@ namespace JonBates.CheckThisOut.Core.PaymentStore
         /// or StorePaymentRequestResult.AlreadyExists if the request is not new, indicating it will not be stored
         /// </returns>
         Task<StorePaymentRequestResult> StoreCaptureFundsRequestAsync(CaptureFundsRequest request);
-        Task StoreCaptureFundsResponseAsync(CaptureFundsResponse response);
-        Task<SubmittedPayment> RetrievePaymentDetailsAsync(string paymentRequestId);
+        Task StoreCaptureFundsResponseAsync(string requestId, Either<PaymentProcessErrorResult, CaptureFundsBankResponse> bankResponse);
+        Task<SubmittedPaymentDetails> RetrievePaymentDetailsAsync(string paymentRequestId);
     }
 }

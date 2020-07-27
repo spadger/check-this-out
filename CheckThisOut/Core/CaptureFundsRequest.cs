@@ -4,7 +4,7 @@ namespace JonBates.CheckThisOut.Core
 {
     public class CaptureFundsRequest
     {
-        public CaptureFundsRequest(string requestId, Guid merchantId, string customerName, string address, string postCode, string pan, decimal amount, DateTime validFrom, DateTime validTo, string cvv, string threeDsToken, DateTime postingDate)
+        public CaptureFundsRequest(string requestId, Guid merchantId, string customerName, string address, string postCode, string pan, decimal amount, string currency, DateTime validFrom, DateTime validTo, string cvv, string threeDsToken, DateTime postingDate)
         {
             RequestId = requestId;
             MerchantId = merchantId;
@@ -13,6 +13,7 @@ namespace JonBates.CheckThisOut.Core
             PostCode = postCode;
             PAN = pan;
             Amount = amount;
+            Currency = currency;
             ValidFrom = validFrom;
             ValidTo = validTo;
             CVV = cvv;
@@ -27,6 +28,7 @@ namespace JonBates.CheckThisOut.Core
         public string PostCode { get; set; }
         public string PAN { get; set; } // Card type can be inferred from the BIN
         public decimal Amount { get; set; }
+        public string Currency { get; set; }
         public DateTime ValidFrom { get; set; }
         public DateTime ValidTo { get; set; }
         public string CVV { get; set; }

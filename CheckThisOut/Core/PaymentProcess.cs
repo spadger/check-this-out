@@ -15,13 +15,20 @@ namespace JonBates.CheckThisOut.Core
         private readonly IPaymentStore _paymentStore;
         private readonly IBankClient _bankClient;
 
-        public async Task<CaptureFundsResponse> ProcessAsync(CaptureFundsRequest request)
+        public async Task<Either<PaymentProcessErrorResult, CaptureFundsBankResponse>> ProcessAsync(CaptureFundsRequest request)
         {
-            await _paymentStore.StoreCaptureFundsRequestAsync(request).ConfigureAwait(false);
+
+            var storeResult = await _paymentStore.StoreCaptureFundsRequestAsync(request).ConfigureAwait(false);
+
+            if (storeResult == StorePaymentRequestResult.AlreadyExists)
+            {
+                var result = new PaymentProcessErrorResult(PaymentProcessErrorType.TransactionAlreadyExists);
+                return Either<PaymentProcessErrorResult, CaptureFundsBankResponse>.Left(result);
+            }
             
             var response = await _bankClient.CaptureFundsAsync(request).ConfigureAwait(false);
-            
-            await _paymentStore.StoreCaptureFundsResponseAsync(response).ConfigureAwait(false);
+
+            await _paymentStore.StoreCaptureFundsResponseAsync(request.RequestId, response).ConfigureAwait(false);
 
             return response;
         }

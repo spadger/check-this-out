@@ -2,9 +2,9 @@
 
 namespace JonBates.CheckThisOut.Core
 {
-    public class ValidationFailure
+    public class FieldError
     {
-        public ValidationFailure(string fieldName, string error)
+        public FieldError(string fieldName, string error)
         {
             FieldName = fieldName;
             Error = error;
@@ -13,7 +13,7 @@ namespace JonBates.CheckThisOut.Core
         public string FieldName { get; }
         public string Error { get; }
 
-        protected bool Equals(ValidationFailure other)
+        protected bool Equals(FieldError other)
         {
             return FieldName == other.FieldName && Error == other.Error;
         }
@@ -23,7 +23,7 @@ namespace JonBates.CheckThisOut.Core
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((ValidationFailure) obj);
+            return Equals((FieldError) obj);
         }
 
         public override int GetHashCode()

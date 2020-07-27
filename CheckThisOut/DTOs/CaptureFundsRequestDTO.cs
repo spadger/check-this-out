@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using JonBates.CheckThisOut.Core;
 
 namespace JonBates.CheckThisOut.DTOs
@@ -6,16 +7,29 @@ namespace JonBates.CheckThisOut.DTOs
     //This is the only DTo to be bound, so the only class to have public setters
     public class CaptureFundsRequestDTO
     {
+        [Required]
         public string RequestId { get; set; }
+        [Required]
         public string CustomerName { get; set; }
+        [Required]
         public string Address { get; set; }
+        [Required]
         public string PostCode { get; set; }
+        [Required]
         public string PAN { get; set; }
+        [Required]
         public decimal Amount { get; set; }
+        [Required, RegularExpression("[A-Z]{3}")]
+        public string Currency { get; set; }
+        [Required]
         public DateTime? ValidFrom { get; set; }
+        [Required]
         public DateTime? ValidTo { get; set; }
+        [Required, RegularExpression("\\d{3}")]
         public string CVV { get; set; }
+        [Required]
         public string ThreeDSToken { get; set; }
+        [Required]
         public DateTime? PostingDate { get; set; }
 
         public CaptureFundsRequest ToRequest(Guid merchantId) 
@@ -29,7 +43,8 @@ namespace JonBates.CheckThisOut.DTOs
                 PostCode,
                 PAN,
                 Amount,
-                ValidFrom.Value,
+                Currency,
+                ValidFrom.Value, //These are safe because we have validated they are not null
                 ValidTo.Value,
                 CVV,
                 ThreeDSToken,

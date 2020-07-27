@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.BankClient;
 using JonBates.CheckThisOut.Core.PaymentStore;
@@ -43,6 +45,10 @@ namespace JonBates.CheckThisOut
                                 Url = new Uri("https://github.com/spadger")
                             }
                         });
+
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    x.IncludeXmlComments(xmlPath);
                 });
         }
 
