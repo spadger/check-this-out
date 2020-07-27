@@ -6,6 +6,7 @@ using JonBates.CheckThisOut.Core.PaymentStore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -105,7 +106,10 @@ namespace JonBates.CheckThisOut
                 app.UseDeveloperExceptionPage();
             }
 
-            
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
