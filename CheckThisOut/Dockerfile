@@ -3,7 +3,7 @@
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["CheckThisOut.csproj", "CheckThisOut/"]
+COPY ["CheckThisOut/CheckThisOut.csproj", "CheckThisOut/"]
 RUN dotnet restore "CheckThisOut/CheckThisOut.csproj"
 COPY . .
 WORKDIR "/src/CheckThisOut"
