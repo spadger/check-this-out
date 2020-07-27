@@ -1,8 +1,19 @@
-version: '3.4'
+version: '3.8'
 
 services:
   checkthisout:
-    image: ${DOCKER_REGISTRY-}checkthisout
     build:
       context: .
       dockerfile: CheckThisOut/Dockerfile
+    ports:
+      - "443:443"
+      - "80:80"
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus-targets.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml

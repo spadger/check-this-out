@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net;
 using System.Threading.Tasks;
 using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.PaymentStore;
 using JonBates.CheckThisOut.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
+using Prometheus;
 
 namespace JonBates.CheckThisOut.Controllers
 {
@@ -16,6 +21,34 @@ namespace JonBates.CheckThisOut.Controllers
         private readonly ILogger<PaymentController> _logger;
         private readonly IPaymentProcess _paymentProcess;
         private readonly IPaymentStore _paymentStore;
+
+        private static readonly Counter _requestCounter;
+        private static readonly Counter _successCounter;
+        private static readonly Summary _responseTimeSummary;
+
+        static PaymentController()
+        {
+            _requestCounter = Metrics.CreateCounter(
+                "payment_request_total_count",
+                "The total number of new payment requests seen");
+
+            _successCounter = Metrics.CreateCounter(
+                "payment_request_success_count",
+                "The total number of sucessfully processed payment requests");
+
+            _responseTimeSummary = Metrics.CreateSummary("payment_request_duration_seconds",
+                "The duration in seconds between the response to a new payment request", new SummaryConfiguration
+                {
+                    Objectives = new []
+                    {
+                        new QuantileEpsilonPair(0.5, 0.05),
+                        new QuantileEpsilonPair(0.75, 0.05),
+                        new QuantileEpsilonPair(0.9, 0.05),
+                        new QuantileEpsilonPair(0.95, 0.01),
+                        new QuantileEpsilonPair(0.99, 0.005),
+                    }
+                });
+        }
 
         public PaymentController(ILogger<PaymentController> logger, IPaymentProcess paymentProcess, IPaymentStore paymentStore)
         {
@@ -36,6 +69,8 @@ namespace JonBates.CheckThisOut.Controllers
         {
             _logger.LogInformation(">> Submitting a payment");
 
+            _requestCounter.Inc();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -43,11 +78,15 @@ namespace JonBates.CheckThisOut.Controllers
 
             var request = requestDTO.ToRequest(Guid.Empty);
 
+            var sw = Stopwatch.StartNew();
+            
             var result = await _paymentProcess.ProcessAsync(request);
+
+            _responseTimeSummary.Observe((double)sw.ElapsedMilliseconds/1000);
 
             _logger.LogInformation("<< Submitting a payment - submitted");
 
-            return result switch
+            IStatusCodeActionResult response = result switch
             {
                 {IsRight: true} => Ok(new CaptureFundsSuccessResponseDTO(result.RightValue)),
                 {IsLeft: true} when result.LeftValue.ErrorType == PaymentProcessErrorType.TransactionAlreadyExists => Conflict(),
@@ -56,6 +95,13 @@ namespace JonBates.CheckThisOut.Controllers
                                             StatusCode = result.LeftValue.ErrorType.ToStatusCode()
                                         }
             };
+
+            if (response.StatusCode == (int) HttpStatusCode.OK)
+            {
+                _successCounter.Inc();
+            }
+
+            return response;
         }
 
 
@@ -77,8 +123,6 @@ namespace JonBates.CheckThisOut.Controllers
             var responseDto = new SubmittedPaymentDetailsResponseDTO(result);
 
             _logger.LogInformation(">> Retrieving a stored payment - retrieved");
-
-
 
             return Ok(responseDto);
         }
