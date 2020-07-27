@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>JonBates.CheckThisOut.Core.Tests</RootNamespace>
+    <RootNamespace>JonBates.CheckThisOut.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CheckThisOut.Core\CheckThisOut.Core.csproj" />
+    <ProjectReference Include="..\CheckThisOut.Core.Tests\CheckThisOut.Core.Tests.csproj" />
+    <ProjectReference Include="..\CheckThisOut\CheckThisOut.csproj" />
   </ItemGroup>
 
 </Project>

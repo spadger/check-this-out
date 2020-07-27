@@ -7,29 +7,31 @@ namespace JonBates.CheckThisOut.DTOs
     {
         public SubmittedPaymentDetailsResponseDTO(SubmittedPaymentDetails paymentDetails)
         {
-            Request = CaptureFundsRequestDTO.From(paymentDetails.Request);
+            var request = paymentDetails.Request;
+            RequestId = request.RequestId;
+            CustomerName = request.CustomerName;
+            Address = request.Address;
+            PostCode = request.PostCode;
+            MaskedPAN = request.PAN.Substring(12, 4).PadLeft(16, '*');
+            Amount = request.Amount;
+            Currency = request.Currency;
+            ValidFrom = request.ValidFrom;
+            ValidTo = request.ValidTo;
+            PostingDate = request.PostingDate;
+
             ProcessingStatus = paymentDetails.ProcessingStatus;
         }
 
-        public CaptureFundsRequestDTO Request { get; }
+        public string RequestId { get; }
+        public string CustomerName { get; }
+        public string Address { get; }
+        public string PostCode { get; }
+        public string MaskedPAN { get; }
+        public decimal Amount { get; }
+        public string Currency { get; }
+        public DateTime ValidFrom { get; }
+        public DateTime ValidTo { get; }
+        public DateTime PostingDate { get; }
         public SubmittedPaymentProcessingStatus ProcessingStatus { get; }
-
-        protected bool Equals(SubmittedPaymentDetailsResponseDTO other)
-        {
-            return Equals(Request, other.Request) && ProcessingStatus == other.ProcessingStatus;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((SubmittedPaymentDetailsResponseDTO) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Request, (int) ProcessingStatus);
-        }
     }
 }

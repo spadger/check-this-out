@@ -1,7 +1,6 @@
 using System;
-using JonBates.CheckThisOut.Core;
 
-namespace CheckThisOut.Core.Tests
+namespace JonBates.CheckThisOut.Core.Tests
 {
     public static class CaptureFundsMessageBuilder
     {
@@ -13,7 +12,7 @@ namespace CheckThisOut.Core.Tests
                 "come-customer",
                 "some-address",
                 "post-code",
-                "1111-2222-3333-4444",
+                "1010202030304040",
                 123.45m,
                 "GBP",
                 new DateTime(2018, 1, 1),
@@ -30,10 +29,12 @@ namespace CheckThisOut.Core.Tests
                 new CaptureFundsBankResponse("some-id"));
         }
 
-        public static Either<PaymentProcessErrorResult, CaptureFundsBankResponse> BuildUnsuccessfulResponse()
+
+        public static Either<PaymentProcessErrorResult, CaptureFundsBankResponse> BuildUnsuccessfulResponse(
+            PaymentProcessErrorType errorType = PaymentProcessErrorType.TransactionAlreadyExists)
         {
             return Either<PaymentProcessErrorResult, CaptureFundsBankResponse>.Left(
-                new PaymentProcessErrorResult(PaymentProcessErrorType.TransactionAlreadyExists));
+                new PaymentProcessErrorResult(errorType));
         }
     }
 }

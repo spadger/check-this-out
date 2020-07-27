@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
-using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.BankClient;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-namespace CheckThisOut.Core.Tests.BankClient
+namespace JonBates.CheckThisOut.Core.Tests.BankClient
 {
     public class FakeBankClientTests
     {

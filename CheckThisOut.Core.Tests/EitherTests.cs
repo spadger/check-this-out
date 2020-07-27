@@ -1,9 +1,8 @@
 using System;
 using FluentAssertions;
-using JonBates.CheckThisOut.Core;
 using Xunit;
 
-namespace CheckThisOut.Core.Tests
+namespace JonBates.CheckThisOut.Core.Tests
 {
     public class EitherTests
     {

@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckThisOut.Core", "CheckT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckThisOut.Core.Tests", "CheckThisOut.Core.Tests\CheckThisOut.Core.Tests.csproj", "{D6A8064B-6F98-4192-9119-8BAA4F556777}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckThisOut.Tests", "CheckThisOut.Tests\CheckThisOut.Tests.csproj", "{A24868C1-91FA-46B3-8A1E-3D2A360DC88E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{D6A8064B-6F98-4192-9119-8BAA4F556777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A8064B-6F98-4192-9119-8BAA4F556777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6A8064B-6F98-4192-9119-8BAA4F556777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A24868C1-91FA-46B3-8A1E-3D2A360DC88E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A24868C1-91FA-46B3-8A1E-3D2A360DC88E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A24868C1-91FA-46B3-8A1E-3D2A360DC88E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A24868C1-91FA-46B3-8A1E-3D2A360DC88E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

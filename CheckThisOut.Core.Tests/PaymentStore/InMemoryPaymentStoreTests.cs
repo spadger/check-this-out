@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.PaymentStore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-namespace CheckThisOut.Core.Tests.PaymentStore
+namespace JonBates.CheckThisOut.Core.Tests.PaymentStore
 {
     public class InMemoryPaymentStoreTests
     {

@@ -15,7 +15,7 @@ namespace JonBates.CheckThisOut.DTOs
         public string Address { get; set; }
         [Required]
         public string PostCode { get; set; }
-        [Required]
+        [Required, RegularExpression("\\d{16}")]
         public string PAN { get; set; }
         [Required]
         public decimal Amount { get; set; }

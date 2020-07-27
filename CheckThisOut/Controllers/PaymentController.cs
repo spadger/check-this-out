@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.PaymentStore;
 using JonBates.CheckThisOut.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -14,6 +14,7 @@ using Prometheus;
 
 namespace JonBates.CheckThisOut.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PaymentController : ControllerBase
