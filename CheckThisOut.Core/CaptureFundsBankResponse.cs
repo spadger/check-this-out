@@ -1,17 +1,15 @@
-﻿using JonBates.CheckThisOut.Core;
-
-namespace JonBates.CheckThisOut.DTOs
+﻿namespace JonBates.CheckThisOut.Core
 {
-    public class CaptureFundsSuccessResponseDTO
+    public class CaptureFundsBankResponse
     {
-        public CaptureFundsSuccessResponseDTO(CaptureFundsBankResponse response)
+        public CaptureFundsBankResponse(string responseId)
         {
-            ResponseId = response.ResponseId;
+            ResponseId = responseId;
         }
 
         public string ResponseId { get; }
 
-        protected bool Equals(CaptureFundsSuccessResponseDTO other)
+        protected bool Equals(CaptureFundsBankResponse other)
         {
             return ResponseId == other.ResponseId;
         }
@@ -21,7 +19,7 @@ namespace JonBates.CheckThisOut.DTOs
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((CaptureFundsSuccessResponseDTO) obj);
+            return Equals((CaptureFundsBankResponse) obj);
         }
 
         public override int GetHashCode()
@@ -29,4 +27,5 @@ namespace JonBates.CheckThisOut.DTOs
             return (ResponseId != null ? ResponseId.GetHashCode() : 0);
         }
     }
+
 }

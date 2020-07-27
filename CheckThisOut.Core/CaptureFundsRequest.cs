@@ -37,7 +37,7 @@ namespace JonBates.CheckThisOut.Core
 
         protected bool Equals(CaptureFundsRequest other)
         {
-            return RequestId == other.RequestId && CustomerName == other.CustomerName && Address == other.Address && PostCode == other.PostCode && PAN == other.PAN && Amount == other.Amount && ValidFrom.Equals(other.ValidFrom) && ValidTo.Equals(other.ValidTo) && CVV == other.CVV && ThreeDSToken == other.ThreeDSToken && PostingDate == other.PostingDate;
+            return RequestId == other.RequestId && MerchantId.Equals(other.MerchantId) && CustomerName == other.CustomerName && Address == other.Address && PostCode == other.PostCode && PAN == other.PAN && Amount == other.Amount && Currency == other.Currency && ValidFrom.Equals(other.ValidFrom) && ValidTo.Equals(other.ValidTo) && CVV == other.CVV && ThreeDSToken == other.ThreeDSToken && PostingDate.Equals(other.PostingDate);
         }
 
         public override bool Equals(object obj)
@@ -52,11 +52,13 @@ namespace JonBates.CheckThisOut.Core
         {
             var hashCode = new HashCode();
             hashCode.Add(RequestId);
+            hashCode.Add(MerchantId);
             hashCode.Add(CustomerName);
             hashCode.Add(Address);
             hashCode.Add(PostCode);
             hashCode.Add(PAN);
             hashCode.Add(Amount);
+            hashCode.Add(Currency);
             hashCode.Add(ValidFrom);
             hashCode.Add(ValidTo);
             hashCode.Add(CVV);

@@ -1,4 +1,4 @@
-namespace JonBates.CheckThisOut
+namespace JonBates.CheckThisOut.Core
 {
     public readonly struct Either<TLeft, TRight> where TLeft: class where TRight : class
     {

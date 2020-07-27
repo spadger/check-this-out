@@ -69,5 +69,36 @@ namespace JonBates.CheckThisOut.DTOs
                 PostingDate = request.PostingDate
             };
         }
+
+        protected bool Equals(CaptureFundsRequestDTO other)
+        {
+            return RequestId == other.RequestId && CustomerName == other.CustomerName && Address == other.Address && PostCode == other.PostCode && PAN == other.PAN && Amount == other.Amount && Currency == other.Currency && Nullable.Equals(ValidFrom, other.ValidFrom) && Nullable.Equals(ValidTo, other.ValidTo) && CVV == other.CVV && ThreeDSToken == other.ThreeDSToken && Nullable.Equals(PostingDate, other.PostingDate);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((CaptureFundsRequestDTO) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = new HashCode();
+            hashCode.Add(RequestId);
+            hashCode.Add(CustomerName);
+            hashCode.Add(Address);
+            hashCode.Add(PostCode);
+            hashCode.Add(PAN);
+            hashCode.Add(Amount);
+            hashCode.Add(Currency);
+            hashCode.Add(ValidFrom);
+            hashCode.Add(ValidTo);
+            hashCode.Add(CVV);
+            hashCode.Add(ThreeDSToken);
+            hashCode.Add(PostingDate);
+            return hashCode.ToHashCode();
+        }
     }
 }

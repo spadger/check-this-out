@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Reflection;
 using JonBates.CheckThisOut.Core;
 using JonBates.CheckThisOut.Core.BankClient;
 using JonBates.CheckThisOut.Core.PaymentStore;

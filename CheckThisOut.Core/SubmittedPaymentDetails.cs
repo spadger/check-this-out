@@ -1,20 +1,19 @@
 ﻿using System;
-using JonBates.CheckThisOut.Core;
 
-namespace JonBates.CheckThisOut.DTOs
+namespace JonBates.CheckThisOut.Core
 {
-    public class SubmittedPaymentDetailsResponseDTO
+    public class SubmittedPaymentDetails
     {
-        public SubmittedPaymentDetailsResponseDTO(SubmittedPaymentDetails paymentDetails)
+        public SubmittedPaymentDetails(CaptureFundsRequest request, SubmittedPaymentProcessingStatus processingStatus)
         {
-            Request = CaptureFundsRequestDTO.From(paymentDetails.Request);
-            ProcessingStatus = paymentDetails.ProcessingStatus;
+            Request = request;
+            ProcessingStatus = processingStatus;
         }
 
-        public CaptureFundsRequestDTO Request { get; }
+        public CaptureFundsRequest Request { get; }
         public SubmittedPaymentProcessingStatus ProcessingStatus { get; }
 
-        protected bool Equals(SubmittedPaymentDetailsResponseDTO other)
+        protected bool Equals(SubmittedPaymentDetails other)
         {
             return Equals(Request, other.Request) && ProcessingStatus == other.ProcessingStatus;
         }
@@ -24,7 +23,7 @@ namespace JonBates.CheckThisOut.DTOs
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((SubmittedPaymentDetailsResponseDTO) obj);
+            return Equals((SubmittedPaymentDetails) obj);
         }
 
         public override int GetHashCode()
