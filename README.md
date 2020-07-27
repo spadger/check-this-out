@@ -20,6 +20,7 @@ Any transaction you submit can be retrieved
   * 400 - Validation failure (i.e. request DTO was valid, but the request was rejected by the acquiring bank)
 
 ## CI
+![.NET Core](https://github.com/spadger/check-this-out/workflows/.NET%20Core/badge.svg)<br>
 CI was implemented as a simple github action - https://github.com/spadger/check-this-out/actions.  Currently it just restores and builds, setting the project's status upon completion.
 
 ## Assumptions
