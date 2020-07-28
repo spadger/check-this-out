@@ -10,14 +10,33 @@ This application was developed in Windows using dotNet Core 3.1, WSL & Linux con
 
 There are two main ways to run:
 * Directly from Visual Studio, which should launch https://localhost:5001/swagger
-* `docker-compose up --build` from the solution root.
-  * http://localhost/swagger & http://localhost:9090
+* Run `build-and-run.bat` from the solution root, which will build the application via a multi-stage dockerfile and launch docker-compose with prometheus
+  * http://localhost/ & http://localhost:9090/
   * This [link](http://localhost:9090/graph?g0.range_input=1m&g0.expr=payment_request_success_count%20%2F%20payment_request_total_count&g0.tab=0]) will take you to the ratio of successful vs unsuccessful payments.
 
 Any transaction you submit can be retrieved
 * Use the following CVVs to simulate some acquiring banks errors:
   * 500 - General Exception
   * 400 - Validation failure (i.e. request DTO was valid, but the request was rejected by the acquiring bank)
+
+### Responses from posting a payment 
+The endpoint will yield three responses, depending on what happens inside the banking process
+
+| Condition                                                            | Status Code | Response Body          |
+| -                                                                    | -           | -                      |            
+| Transaction was processed successfully                               |     200     | Bank Response Object   |
+| Transaction was not structurally valid or failed upstream validation |     400     | An error object        |
+| Transaction has already been posted                                  |     409     | None                   |
+| Exception raised by banking process                                  |     500     | An error object        |
+
+### Responses from retrieving a payment
+This endpoint will yield two different responses
+
+| Condition              | Status Code | Response Body                 |
+| -                      | -           | -                             |
+| Payment request exists |     200     | Saved-payment response object |
+| Payment does not exist |     404     | None                          |
+
 
 ## CI
 ![.NET Core](https://github.com/spadger/check-this-out/workflows/.NET%20Core/badge.svg)<br>
@@ -33,7 +52,7 @@ CI was implemented as a simple github action - https://github.com/spadger/check-
 ## Extra-mile bonus things I left out
 
 * Authentication - Obviously a prod API would need Authentication & Authorization, but configuring JWT infrastructure feels out of scope
-* API Client - SwaggerUI os a reasonable client for this
+* API Client - SwaggerUI as a reasonable client for this
 * Performance testing - feels out of scope
 * Storage & Encryption - All storage is mocked for this exercise, so no encryption / tokenisation is required
 

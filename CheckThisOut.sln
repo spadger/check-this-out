@@ -10,7 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5C8EAAC9-E9FE-4DEB-8FB7-528843B6AEE7}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		build-and-run.ps1 = build-and-run.ps1
+		build-and-run.bat = build-and-run.bat
 		Checkout-dotnet-Challenge-2.0.pdf = Checkout-dotnet-Challenge-2.0.pdf
 		docker-compose.yml = docker-compose.yml
 		prometheus-targets.yml = prometheus-targets.yml
