@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5C8EAAC9-E9FE-4DEB-8FB7-528843B6AEE7}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		build-and-run.ps1 = build-and-run.ps1
 		Checkout-dotnet-Challenge-2.0.pdf = Checkout-dotnet-Challenge-2.0.pdf
 		docker-compose.yml = docker-compose.yml
 		prometheus-targets.yml = prometheus-targets.yml
@@ -20,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckThisOut.Core", "CheckT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckThisOut.Core.Tests", "CheckThisOut.Core.Tests\CheckThisOut.Core.Tests.csproj", "{D6A8064B-6F98-4192-9119-8BAA4F556777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckThisOut.Tests", "CheckThisOut.Tests\CheckThisOut.Tests.csproj", "{A24868C1-91FA-46B3-8A1E-3D2A360DC88E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckThisOut.Tests", "CheckThisOut.Tests\CheckThisOut.Tests.csproj", "{A24868C1-91FA-46B3-8A1E-3D2A360DC88E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
